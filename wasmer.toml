@@ -1,4 +1,4 @@
-
+toml
 [package]
 name = "vite-template-redux"
 version = "0.1.0"
@@ -10,4 +10,4 @@ module = "wasmer/static-website@1.0.6"
 runner = "https://webc.org/runner/wasi"
 
 [package.filesystem]
-"build" = "/build"
+"build" = "/app"
