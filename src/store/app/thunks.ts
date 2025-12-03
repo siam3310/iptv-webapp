@@ -43,11 +43,28 @@ export const loadApp = createAsyncThunk<
   }> => {
     thunkAPI.dispatch(loadWatchlist())
 
-    const apiConfig = await localStorageGet(STORAGE_KEY.API_CONFIG)
+    const apiConfigStr = await localStorageGet(STORAGE_KEY.API_CONFIG)
 
-    if (!apiConfig) return Promise.reject("no stored login found")
+    let config: XtremeCodesConfig
+    if (!apiConfigStr) {
+      // Set default config if not found in local storage
+      config = {
+        baseUrl: "http://filex.me:8080",
+        auth: {
+          username: "MAS101A",
+          password: "MAS101AABB",
+        },
+      }
+    } else {
+      config = JSON.parse(apiConfigStr) as XtremeCodesConfig
+    }
 
-    const config = JSON.parse(apiConfig) as XtremeCodesConfig
+    // Ensure baseUrl always uses http and remove https if present
+    if (config.baseUrl.startsWith("https://")) {
+      config.baseUrl = config.baseUrl.replace("https://", "http://")
+    } else if (!config.baseUrl.startsWith("http://")) {
+      config.baseUrl = "http://" + config.baseUrl;
+    }
 
     if (
       ![config.auth.username, config.auth.password, config.baseUrl].every(
