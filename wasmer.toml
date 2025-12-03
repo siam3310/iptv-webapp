@@ -1,0 +1,13 @@
+
+[package]
+name = "vite-template-redux"
+version = "0.1.0"
+description = "A static website for iptv"
+
+[[command]]
+name = "script"
+module = "wasmer/static-website@1.0.6"
+runner = "https://webc.org/runner/wasi"
+
+[package.filesystem]
+"build" = "/build"
